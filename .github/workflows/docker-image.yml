@@ -1,0 +1,22 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build Docker image
+      run: docker build -t api-contas .
+    - name: Tag Docker image
+      run: docker tag api-contas:latest brunobrasolin/api-contas
+    - name: Push Docker image
+      run: docker push brunobrasolin/api-contas
