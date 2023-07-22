@@ -1,44 +1,27 @@
 using Dapper;
 using Microsoft.AspNetCore.Mvc;
-using MySqlConnector;
+using Oracle.ManagedDataAccess.Client;
 using System.Reflection;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddTransient(x => new MySqlConnection(builder.Configuration.GetConnectionString("Default")));
+builder.Services.AddScoped(x => new OracleConnection(builder.Configuration.GetConnectionString("Default")));
 
 WebApplication app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.MapPost("/api/cadastrar", (SalaryHistoryDTO dto, [FromServices] MySqlConnection connection) =>
+
+app.MapPost("/api/atualizar-salario", (SalaryHistoryDTO dto, [FromServices] OracleConnection connection) =>
 {
-    connection.Execute("INSERT INTO SALARY_HISTORY (person, salary) VALUES (@person, @salary)", dto);
+    connection.Execute("UPDATE SALARIES SET salary = :salary WHERE PERSON = :person", dto);
 
 });
 
-app.MapGet("/api/conta", (double valor, [FromServices] MySqlConnection connection) =>
+app.MapGet("/api/conta", (double valor, [FromServices] OracleConnection connection) =>
 {
-    string query = @"SELECT BRUNO.*
-                        FROM (
-                            SELECT *
-                            FROM SALARY_HISTORY
-                            WHERE person = 0
-                            ORDER BY datetime_created DESC
-                            LIMIT 1
-                        ) BRUNO
-                    UNION ALL
-                    SELECT LETICIA.*
-                        FROM (
-                            SELECT *
-                            FROM SALARY_HISTORY
-                            WHERE person = 1
-                            ORDER BY datetime_created DESC
-                            LIMIT 1
-                        ) LETICIA;";
-
-    IEnumerable<SalaryHistoryMapper> salaryHistoryMapper = connection.Query<SalaryHistoryMapper>(query);
+    IEnumerable<SalaryHistoryMapper> salaryHistoryMapper = connection.Query<SalaryHistoryMapper>("SELECT * FROM SALARIES");
 
     double _salaryB = salaryHistoryMapper.Where(w => w.PERSON == Person.Bruno).Select(s => s.SALARY).First();
     double _salaryL = salaryHistoryMapper.Where(w => w.PERSON == Person.Leticia).Select(s => s.SALARY).First();
