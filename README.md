@@ -2,8 +2,7 @@
 
 ## Functionalities
 
-1. 2 people;
-2. Calculate (using the last 2 salaries created) the percentage of an amount based on the sum of salaries.
+1. Calculate the percentage of an amount based on the sum of salaries of two peoples.
 
 ## Challenges
 
