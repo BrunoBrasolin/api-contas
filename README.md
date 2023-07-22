@@ -16,3 +16,4 @@
 - Image: [Docker](https://hub.docker.com/repository/docker/brunobrasolin/api-contas/general)
 - Repository: [GitHub](https://github.com/BrunoBrasolin/api-contas)
 - Database: [Oracle Autonomous Transaction Processing](https://www.oracle.com/br/autonomous-database/autonomous-transaction-processing/)
+- Continuous Integration: [GitHub Actions](https://github.com/features/actions)
