@@ -7,7 +7,8 @@
 ## Challenges
 
 - Minimal API with .NET 7;
-- Docker with ASP.NET API.
+- Docker with ASP.NET API;
+- GitHub Actions.
 
 ## Tools
 
