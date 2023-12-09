@@ -1,17 +1,20 @@
 using Dapper;
 using Microsoft.AspNetCore.Mvc;
 using Oracle.ManagedDataAccess.Client;
-using System.Reflection;
+using System.Globalization;
+using System.Text.Json;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped(x => new OracleConnection(builder.Configuration.GetConnectionString("Default")));
+builder.Services.AddCors();
 
 WebApplication app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
+app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
 app.MapPost("/api/atualizar-salario", (SalaryHistoryDTO dto, [FromServices] OracleConnection connection) =>
 {
@@ -29,11 +32,18 @@ app.MapGet("/api/conta", (double valor, [FromServices] OracleConnection connecti
     double porcentagemB = CalculatePercentage("Bruno", _salaryB, _salaryL);
     double porcentageml = CalculatePercentage("Letícia", _salaryB, _salaryL);
 
-    double valorB = CalculageValue(porcentagemB, valor);
-    double valorL = CalculageValue(porcentageml, valor);
+    double valorB = CalculateValue(porcentagemB, valor);
+    double valorL = CalculateValue(porcentageml, valor);
 
-    return $"Bruno: {Double.Round(valorB, 2)} | Letícia: {Double.Round(valorL, 2)}";
+    CultureInfo customCulture = new("pt-BR");
 
+    object result = new
+    {
+        Leticia = valorL.ToString("N2", customCulture),
+        Bruno = valorB.ToString("N2", customCulture)
+    };
+
+    return JsonSerializer.Serialize(result);
 });
 
 app.Run();
@@ -46,7 +56,7 @@ static double CalculatePercentage(string pessoa, double salaryB, double salaryL)
         return salaryL * 100 / (salaryB + salaryL);
 }
 
-static double CalculageValue(double porcentagem, double valor)
+static double CalculateValue(double porcentagem, double valor)
 {
     return porcentagem * valor / 100;
 }
