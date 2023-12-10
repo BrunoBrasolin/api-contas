@@ -5,16 +5,15 @@ using System.Globalization;
 using System.Text.Json;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+builder.Services.AddCors();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped(x => new OracleConnection(builder.Configuration.GetConnectionString("Default")));
-builder.Services.AddCors();
 
 WebApplication app = builder.Build();
+app.UseCors(builder => builder.WithOrigins("http://contas.gamidas.dev.br").AllowAnyHeader().AllowAnyMethod());
 app.UseSwagger();
 app.UseSwaggerUI();
-
-app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
 app.MapPost("/api/atualizar-salario", (SalaryHistoryDTO dto, [FromServices] OracleConnection connection) =>
 {
