@@ -2,18 +2,54 @@ using Dapper;
 using Microsoft.AspNetCore.Mvc;
 using Oracle.ManagedDataAccess.Client;
 using System.Globalization;
-using System.Text.Json;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Newtonsoft.Json;
+using System.Net.Mime;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped(x => new OracleConnection(builder.Configuration.GetConnectionString("Default")));
+string connectionString = builder.Configuration.GetConnectionString("Default");
+builder.Services.AddScoped(x => new OracleConnection(connectionString));
+builder.Services.AddHealthChecks().AddOracle(connectionString);
 
 WebApplication app = builder.Build();
 app.UseCors(builder => builder.WithOrigins("http://contas.gamidas.dev.br").AllowAnyHeader().AllowAnyMethod());
 app.UseSwagger();
 app.UseSwaggerUI();
+
+app.MapHealthChecks("/healthcheck", new HealthCheckOptions
+{
+    ResponseWriter = async (context, report) =>
+    {
+        string appHealth = Enum.GetName(typeof(HealthStatus), HealthStatus.Healthy);
+
+        var dependencies = report.Entries.Select(e =>
+        {
+
+            HealthStatus status = e.Value.Status;
+
+            if (status != HealthStatus.Healthy)
+                appHealth = Enum.GetName(typeof(HealthStatus), HealthStatus.Unhealthy);
+
+            return new
+            {
+                key = e.Key,
+                value = Enum.GetName(typeof(HealthStatus), e.Value.Status)
+            };
+        }).ToList();
+
+        var result = JsonConvert.SerializeObject(new
+        {
+            status = appHealth,
+            dependencies
+        });
+        context.Response.ContentType = MediaTypeNames.Application.Json;
+        await context.Response.WriteAsync(result);
+    }
+});
 
 app.MapPost("/api/atualizar-salario", (SalaryHistoryDTO dto, [FromServices] OracleConnection connection) =>
 {
@@ -42,7 +78,7 @@ app.MapGet("/api/conta", (double valor, [FromServices] OracleConnection connecti
         Bruno = valorB.ToString("N2", customCulture)
     };
 
-    return JsonSerializer.Serialize(result);
+    return JsonConvert.SerializeObject(result);
 });
 
 app.Run();
