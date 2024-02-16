@@ -11,7 +11,7 @@ on:
 
 jobs:
   nuget-workflow:
-    uses: BrunoBrasolin/workflow-template/.github/workflows/docker-image.yml@main
+    uses: BrunoBrasolin/workflow-template/.github/workflows/net-docker-publish.yml@main
     with:
       image: brunobrasolin/api-contas
     secrets: inherit
