@@ -1,4 +1,3 @@
-using Dapper;
 using Microsoft.AspNetCore.Mvc;
 using Oracle.ManagedDataAccess.Client;
 using System.Globalization;
@@ -14,6 +13,9 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Configuration.SetBasePath("app/config");
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
 string connectionString = builder.Configuration.GetConnectionString("Default");
 builder.Services.AddScoped(x => new OracleConnection(connectionString));
 builder.Services.AddHealthChecks().AddOracle(connectionString);
