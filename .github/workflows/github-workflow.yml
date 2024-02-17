@@ -20,6 +20,7 @@ jobs:
     needs: CI
     uses: BrunoBrasolin/workflow-template/.github/workflows/aspnet-docker-cd.yml@main
     with:
-      image: brunobrasolin/api-contas
+      dockerAccount: brunobrasolin
+      applicationName: api-contas
       port: 82
     secrets: inherit
