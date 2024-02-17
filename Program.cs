@@ -13,7 +13,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Configuration.SetBasePath("app/config");
+builder.Configuration.SetBasePath("/app/config");
 builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
 string connectionString = builder.Configuration.GetConnectionString("Default");
