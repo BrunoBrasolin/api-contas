@@ -17,6 +17,7 @@ jobs:
     secrets: inherit
   
   CD:
+    needs: CI
     uses: BrunoBrasolin/workflow-template/.github/workflows/aspnet-docker-cd.yml@main
     with:
       image: brunobrasolin/api-contas
