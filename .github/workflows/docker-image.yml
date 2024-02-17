@@ -10,8 +10,14 @@ on:
   workflow_dispatch:
 
 jobs:
-  nuget-workflow:
-    uses: BrunoBrasolin/workflow-template/.github/workflows/net-docker-publish.yml@main
+  CI:
+    uses: BrunoBrasolin/workflow-template/.github/workflows/aspnet-docker-ci.yml.yml@main
+    with:
+      image: brunobrasolin/api-contas
+    secrets: inherit
+  
+  CD:
+    uses: BrunoBrasolin/workflow-template/.github/workflows/aspnet-docker-cd.yml.yml@main
     with:
       image: brunobrasolin/api-contas
     secrets: inherit
