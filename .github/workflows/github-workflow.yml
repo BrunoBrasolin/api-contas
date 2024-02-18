@@ -11,14 +11,14 @@ on:
 
 jobs:
   CI:
-    uses: BrunoBrasolin/workflow-template/.github/workflows/aspnet-docker-ci.yml@main
+    uses: BrunoBrasolin/workflow-template/.github/workflows/net-docker-ci.yml@main
     with:
       image: brunobrasolin/api-contas
     secrets: inherit
   
   CD:
     needs: CI
-    uses: BrunoBrasolin/workflow-template/.github/workflows/aspnet-docker-cd.yml@main
+    uses: BrunoBrasolin/workflow-template/.github/workflows/net-docker-cd.yml@main
     with:
       dockerAccount: brunobrasolin
       applicationName: api-contas
