@@ -61,7 +61,7 @@ app.MapPost("/api/atualizar-salario", (UpdateSalaryDTO dto, [FromServices] Oracl
     SalariesQueries.UpdateSalary(connection, dto);
 });
 
-app.MapGet("/api/contas", (double valor, [FromServices] OracleConnection connection) =>
+app.MapGet("/api/conta", (double valor, [FromServices] OracleConnection connection) =>
 {
     IEnumerable<SalariesMapper> salaryMapper = SalariesQueries.SelectAll(connection);
 
