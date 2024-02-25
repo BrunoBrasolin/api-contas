@@ -21,8 +21,7 @@ builder.Services.AddScoped(x => new OracleConnection(connectionString));
 builder.Services.AddHealthChecks().AddOracle(connectionString);
 
 WebApplication app = builder.Build();
-app.UseCors(builder => builder.WithOrigins(origin.Contains("http://", StringComparison.OrdinalIgnoreCase) &&
-                                         origin.Contains(".gamidas.dev.br", StringComparison.OrdinalIgnoreCase)).AllowAnyHeader().AllowAnyMethod());
+app.UseCors(builder => builder.WithOrigins("*.gamidas.dev.br").AllowAnyHeader().AllowAnyMethod());
 app.UseSwagger();
 app.UseSwaggerUI();
 
