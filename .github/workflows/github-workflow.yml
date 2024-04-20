@@ -13,7 +13,7 @@ jobs:
   CI:
     uses: BrunoBrasolin/workflow-template/.github/workflows/net-docker-ci.yml@main
     with:
-      image: brunobrasolin/api-contas
+      applicationName: api-contas
     secrets: inherit
   
   CD:
