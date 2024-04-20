@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace api.contas.DTOs;
 
-class UpdateSalaryDTO
+class UpdateSalaryDto
 {
 	[JsonConverter(typeof(JsonStringEnumConverter))]
     public Person Person { get; set; }

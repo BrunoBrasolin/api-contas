@@ -56,7 +56,7 @@ app.MapHealthChecks("/healthcheck", new HealthCheckOptions
     }
 });
 
-app.MapPost("/api/atualizar-salario", (UpdateSalaryDTO dto, [FromServices] OracleConnection connection) =>
+app.MapPost("/api/atualizar-salario", (UpdateSalaryDto dto, [FromServices] OracleConnection connection) =>
 {
     SalariesQueries.UpdateSalary(connection, dto);
 });

@@ -6,7 +6,7 @@ namespace api.contas.Database.SALARIES;
 
 static class SalariesQueries
 {
-    public static bool UpdateSalary(OracleConnection connection, UpdateSalaryDTO dto)
+    public static bool UpdateSalary(OracleConnection connection, UpdateSalaryDto dto)
     {
         connection.Execute("UPDATE SALARIES SET salary = :salary WHERE PERSON = :person", dto);
 
