@@ -22,5 +22,5 @@ jobs:
     with:
       dockerAccount: brunobrasolin
       applicationName: api-contas
-      port: 44301
+      port: 81
     secrets: inherit
