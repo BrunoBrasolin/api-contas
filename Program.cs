@@ -56,12 +56,12 @@ app.MapHealthChecks("/healthcheck", new HealthCheckOptions
     }
 });
 
-app.MapPost("/api/atualizar-salario", (UpdateSalaryDto dto, [FromServices] OracleConnection connection) =>
+app.MapPost("/atualizar-salario", (UpdateSalaryDto dto, [FromServices] OracleConnection connection) =>
 {
     SalariesQueries.UpdateSalary(connection, dto);
 });
 
-app.MapGet("/api/conta", (double valor, [FromServices] OracleConnection connection) =>
+app.MapGet("/conta", (double valor, [FromServices] OracleConnection connection) =>
 {
     IEnumerable<SalariesMapper> salaryMapper = SalariesQueries.SelectAll(connection);
 
