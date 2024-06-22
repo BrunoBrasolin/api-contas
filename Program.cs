@@ -21,7 +21,6 @@ builder.Services.AddScoped(x => new OracleConnection(connectionString));
 builder.Services.AddHealthChecks().AddOracle(connectionString);
 
 WebApplication app = builder.Build();
-app.UseCors(builder => builder.WithOrigins("https://bills-calculate-percentage.gamidas.dev.br", "https://bills-update-salary.gamidas.dev.br").AllowAnyHeader().AllowAnyMethod());
 app.UseSwagger();
 app.UseSwaggerUI();
 
