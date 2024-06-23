@@ -10,7 +10,6 @@ using api.contas.Enums;
 using api.contas.Database.SALARIES;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-builder.Services.AddCors();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Configuration.SetBasePath("/app/config");
